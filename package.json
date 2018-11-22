@@ -1,7 +1,7 @@
 {
-  "name": "react-boilerplate",
+  "name": "webapp",
   "version": "1.0.0",
-  "description": "Basic React Boilerplate",
+  "description": "Dr. Santoso's Solar Monitoring Project",
   "private": true,
   "scripts": {
     "dev": "webpack --mode development",
@@ -12,9 +12,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/spenceryue/react-boilerplate.git"
+    "url": "git+https://github.com/santoso-solar-monitoring-project/webapp.git"
   },
-  "author": "Spencer Yue <spenceryue@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "d3-shape": "^1.2.2",
