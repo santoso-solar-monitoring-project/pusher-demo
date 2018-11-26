@@ -8,7 +8,8 @@
     "build": "webpack --mode production",
     "watch": "webpack --mode development --watch",
     "start": "webpack-dev-server --mode development",
-    "pusher": "node ./dist/pusher.js"
+    "pusher": "node ./dist/pusher.js",
+    "stage": "rm -r docs/* && cp -r dist/public/* docs"
   },
   "repository": {
     "type": "git",

@@ -85,8 +85,8 @@ const client = {
   output: {
     path: path.resolve(__dirname, 'dist/public'),
     filename: '[name].js',
-    publicPath: '/',
-    // Needed for devServer to work. `Cannot GET /` error otherwise.
+    // publicPath: '/',
+    // Needed for devServer to work. `Cannot GET /` error otherwise. --jk idk if needed still
     // See https://github.com/webpack/webpack-dev-server/issues/1373#issuecomment-399956296
   },
   module: module_option,
