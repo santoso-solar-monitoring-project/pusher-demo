@@ -28,3 +28,7 @@ Currently it should look like this:
 
 [1]: https://developers.google.com/web/ilt/pwa/introduction-to-push-notifications#pushapi
 [preview1]: preview1.gif
+
+# Gotchas
+
+Make sure to run `yarn dev` or `yarn build` prior to doing `yarn pusher` or your code will be stale (i.e. need to compile code to see results). The only difference between `yarn dev` and `yarn build` is that the generated code will be minified for `yarn build`.
