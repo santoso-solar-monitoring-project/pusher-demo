@@ -47,11 +47,12 @@ export default class Area extends React.Component {
     this.ctx.translate(0, this.height / 2);
     this.clear();
     this.ctx.beginPath();
-    this.area(this.context.data);
+    this.area(this.context.data.map(([x, y]) => [x / 1000, y])); // ms -> sec
     // this.ctx.closePath();
     this.ctx.fill();
     this.ctx.stroke();
     this.ctx.translate(0, -this.height / 2);
+    console.log({ data: this.context.data });
   }
   componentWillUnmount() {
     console.log('Unmounting!');

@@ -9,29 +9,29 @@ var pusher = new Pusher({
   encrypted: true,
 });
 
-const sample_rate = 50; // Hz
-const buf_interval = 1e-1; // second
+const sample_rate = 5; // Hz
+const buf_interval = 1; // second
 const buf_size = buf_interval * sample_rate; // samples
 
 async function* SampleData({
   sample_rate, // Hz
   t0 = Date.now() / 1000, // seconds
   sine_freq = 1, // Hz
-  random = false,
+  random = true,
 } = {}) {
   random = random ? Math.random : () => 1;
   const ang_freq = 2 * Math.PI * sine_freq; // radians/second
   while (true) {
-    const x = Date.now() / 1000; // seconds
-    const y = Math.sin(ang_freq * x);
-    const wait = ((2 * random()) / sample_rate) * 1000;
+    const x = Date.now(); // milliseconds
+    const y = Math.sin((ang_freq * x) / 1000);
+    const wait = ((2 * random() + 1) / sample_rate) * 1000;
     // wait this long to generate a sample
     await sleep(wait);
     yield [x, y];
   }
 }
 
-async function main() {
+async function main(channelName) {
   const sample_data = SampleData({ sample_rate });
   while (true) {
     const payload = [];
@@ -39,13 +39,16 @@ async function main() {
       const point = (await sample_data.next()).value;
       payload.push(point);
     }
-    pusher.trigger('sine-wave', 'new-data', { payload });
+    pusher.trigger(channelName, 'new-data', { payload });
 
     console.log(
-      `${new Date().toLocaleTimeString()} | new-data triggered!\n`,
+      `${new Date().toLocaleTimeString()} | ${channelName} | new-data triggered!\n`,
       payload
     );
   }
 }
 
-main();
+const channels =
+  process.argv.length > 2 ? process.argv.slice(2) : ['sine-wave'];
+
+channels.forEach(ch => main(ch));
