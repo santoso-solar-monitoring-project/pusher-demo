@@ -9,8 +9,8 @@ var pusher = new Pusher({
   encrypted: true,
 });
 
-const sample_rate = 5; // Hz
-const buf_interval = 1; // second
+const sample_rate = 10; // Hz
+const buf_interval = 0.4; // second
 const buf_size = buf_interval * sample_rate; // samples
 
 async function* SampleData({
