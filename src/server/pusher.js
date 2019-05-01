@@ -1,5 +1,7 @@
 import Pusher from 'pusher';
 import { sleep } from './utils';
+import M from 'moment-timezone';
+M.tz.setDefault('America/Chicago');
 
 var pusher = new Pusher({
   appId: '651114',
@@ -9,9 +11,9 @@ var pusher = new Pusher({
   encrypted: true,
 });
 
-const sample_rate = 10; // Hz
-const buf_interval = 0.4; // second
-const buf_size = buf_interval * sample_rate; // samples
+const sample_rate = 2; // Hz
+const buf_interval = 4; // second
+const buf_size = Math.round(buf_interval * sample_rate); // samples
 
 async function* SampleData({
   sample_rate, // Hz
@@ -31,24 +33,34 @@ async function* SampleData({
   }
 }
 
-async function main(channelName) {
+async function main(channels) {
   const sample_data = SampleData({ sample_rate });
   while (true) {
     const payload = [];
-    for (const _ in [...Array(buf_size)]) {
+    for (let i = 0; i<buf_size; i++) {
       const point = (await sample_data.next()).value;
       payload.push(point);
     }
-    pusher.trigger(channelName, 'new-data', { payload });
 
-    console.log(
-      `${new Date().toLocaleTimeString()} | ${channelName} | new-data triggered!\n`,
-      payload
-    );
+    const events = channels.map((channel,i)=>
+    {
+      const p = payload.map(pair=> [pair[0], pair[1]+i])
+      console.log(
+        `${M().format('LTS')} | ${channel} | new-data triggered!\n`,
+        p
+      );
+      return {
+        channel,
+        name: "new-data",
+        data: { payload:p }
+      };
+    });
+
+    pusher.triggerBatch(events);
   }
 }
 
 const channels =
   process.argv.length > 2 ? process.argv.slice(2) : ['sine-wave'];
 
-channels.forEach(ch => main(ch));
+main(channels);
