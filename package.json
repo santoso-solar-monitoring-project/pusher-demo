@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/santoso-solar-monitoring-project/webapp.git"
+    "url": "git+https://github.com/santoso-solar-monitoring-project/pusher-demo.git"
   },
   "license": "MIT",
   "dependencies": {
